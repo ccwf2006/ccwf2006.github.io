@@ -51,9 +51,9 @@ layout: default
         Categories
       </div>
       
-      <a href="javascript:;" class="categories-list-item" cate="All">
+      <!--<a href="javascript:;" class="categories-list-item" cate="All">
         All<span class="my-badge"> {{site.categories | size}}</span>
-      </a>
+      </a>-->
       {% for category in site.categories %}
         <a href="javascript:;" class="categories-list-item" cate="{{ category | first }}">
           {{ category | first }} <span class="my-badge">{{ category | last | size }}</span>
