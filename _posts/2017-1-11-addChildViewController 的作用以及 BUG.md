@@ -5,10 +5,9 @@ date: 2017-1-11
 categories: iOS
 ---
 苹果的文档是这样说的:
-**
-This method creates a parent-child relationship between the current view controller and the object in thechildController parameter. This relationship is necessary when embedding the child view controller’s view into the current view controller’s content. If the new child view controller is already the child of a container view controller, it is removed from that container before being added.
-This method is only intended to be called by an implementation of a custom container view controller. If you override this method, you must callsuper in your implementation.
-**
+
+**This method creates a parent-child relationship between the current view controller and the object in thechildController parameter. This relationship is necessary when embedding the child view controller’s view into the current view controller’s content. If the new child view controller is already the child of a container view controller, it is removed from that container before being added.**
+**This method is only intended to be called by an implementation of a custom container view controller. If you override this method, you must callsuper in your implementation.**
 
 大意就是要求,如果 B VC 的 view 作为 A  VC 的 view 的 subView.那么也应该调用 addChildViewController 把B VC 设置为 A VC 的 childViewController.
 
@@ -23,4 +22,4 @@ This method is only intended to be called by an implementation of a custom conta
 
 所以,addChildViewController 以后,还是要手动设置一下 B VC 的 view 的 frame 来避免这个 BUG.
 
-http://stackoverflow.com/questions/17192005/what-does-addchildviewcontroller-actually-do
+<http://stackoverflow.com/questions/17192005/what-does-addchildviewcontroller-actually-do>

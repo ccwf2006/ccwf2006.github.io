@@ -25,7 +25,7 @@ NSMutableArray 排序通常使用
 没有用过,暂时也不研究怎么用
 
 先来看一个例子:
-```
+```Objective-C
 NSMutableArray* testArray = [@[@1,@4,@3,@2] mutableCopy];
     [testArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         if ([obj1 intValue] < [obj2 intValue]) {
@@ -56,7 +56,7 @@ NSOrderedSame 表示 obj1 和 obj2 是一样的
 按照 ASCII 表排序
 
 再来看一个例子:
-```
+```Objective-C
 NSMutableArray *array = [NSMutableArray arrayWithObjects:@"one", @"two", @"three", @"four", nil];
 [array sortWithOptions:0 usingComparator:^NSComparisonResult(id obj1, id obj2) {
     if ( [obj1 length] < [obj2 length] )
@@ -69,7 +69,7 @@ NSMutableArray *array = [NSMutableArray arrayWithObjects:@"one", @"two", @"three
 
 有一个参数是 NSSortOptions 这是一个 NS_OPTIONS 枚举值如下:
 
-```
+```Objective-C
 typedef NS_OPTIONS(NSUInteger, NSSortOptions) {
     NSSortConcurrent = (1UL << 0),
     NSSortStable = (1UL << 4),
@@ -97,4 +97,4 @@ NSSortStable 是稳定的排序算法,例如:冒泡排序 插入排序
 那么 NSSortStable 这个选项就容易选了.没有特殊要求就使用 NSSortConcurrent 速度快,有特殊要求就使用 NSSortStable.
 
 参考:
-http://stackoverflow.com/questions/9794957/documentation-for-nssortstable-is-ungrammatical-what-is-i
+<http://stackoverflow.com/questions/9794957/documentation-for-nssortstable-is-ungrammatical-what-is-i>
