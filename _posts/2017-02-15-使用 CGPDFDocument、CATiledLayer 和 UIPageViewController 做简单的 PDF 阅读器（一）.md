@@ -4,9 +4,9 @@ title: 使用 CGPDFDocument、CATiledLayer 和 UIPageViewController 做简单的
 date: 2017-02-15
 categories: iOS
 ---
-#0
+# 0
 最近项目中需要给客户看一些比较私密的文件，为了防止盗取和篡改，需要用 PDF 格式，为 app 添加了一个简单的 PDF 阅读模块。
-#打开 PDF
+# 打开 PDF
 iOS 打开 PDF 是非常方便的事情，系统原生支持。
 
 ```
@@ -29,8 +29,6 @@ CFStringCreateWithCString(CFAllocatorGetDefault(), pdfURL.path.UTF8String, kCFSt
 ```
 
 CGPDFDocumentCreateWithURL这里的 path，可以使用 NSURL 的fileURLWithPath:来获取，并用CFStringCreateWithCString转换。
-
-
 
 _pdfDocument 是 CGPDFDocumentRef 类型的，在打开 PDF 文件以后，一直持有 PDF 文件的引用。
 
@@ -62,8 +60,8 @@ _totalPageNum = CGPDFDocumentGetNumberOfPages(_pdfDocument);
 
 PDFContentViewController是一个显示 PDF 页面的类，每个 PDF 页面创建一个类。刚好给 UIPageViewController 做翻页效果使用。UIPageViewController 用起来很坑，这个以后再说。
 
-#PDF文件显示
-##绘制 pdf 文件
+# PDF文件显示
+## 绘制 pdf 文件
 绘制 pdf 文件跟平时绘制图片差不多
 
 ```
@@ -133,7 +131,7 @@ typedef CF_ENUM (int32_t, CGPDFBox) {
 2.手动计算正在显示的区域比较困难。
 
 好在 CATiledLayer可以帮我们解决这个难题，但是 CATiledLayer 也有一些坑。
-##使用 CATiledLayer 显示 PDF
+## 使用 CATiledLayer 显示 PDF
 上面的绘图代码是显示缩略图的绘制代码，由于CATiledLayer 绘制图片是异步的，在绘制过程中，会存在一块一块闪烁的情况，在 CATiledLayer 下面放一个缩略图，效果比较好。
 CATiledLayer是 iOS 提供的一个专门显示大图片的类，它可以分块加载，异步加载。并且有自己的内存管理机制，可以把屏幕外的部分及时移除。
 在 UIScrollview 上面使用 CATiledLayer 时需要设置

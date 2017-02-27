@@ -34,7 +34,7 @@ webViewConfiguration.processPool = self.sharedProcessPool;
 
 implementation-defined process limit is reached 这个条件达到的时候,会发生什么?我不确定.
 
-#再来解决自定义 Cookie 的问题
+# 再来解决自定义 Cookie 的问题
 
 这个服务器一般有这样的需求,在 App 中 webview 发起请求,带一个特殊的 Cookie 字段来表示来源.
 
@@ -61,7 +61,7 @@ if ([navigationAction.request allHTTPHeaderFields][@"Cookie"] && [[navigationAct
 
 **这种方式实质是在发送给服务器的请求中伪造了 Cookie, 服务器在某些情况下回认的,但是,  web 前端那边是肯定拿不到的这些 Cookie,当 web 前端发 ajax 请求的时候,更是不会带上这些自定义的 Cookie.**
 
-#打通 web 前端与 native 之间的 cookie 存储.
+# 打通 web 前端与 native 之间的 cookie 存储.
 
 似乎 WKProcesspool 创建的时候,会从 NSCookieStorage 里面读取 Cookie 之前看过一段 FireFox 的源码,他们是通过替换 WKProcesspool 来做到隐私浏览器的.
 
