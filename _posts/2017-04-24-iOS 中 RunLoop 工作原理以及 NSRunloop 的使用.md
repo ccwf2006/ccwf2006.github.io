@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2017-04-24-iOS 中 RunLoop 工作原理以及 NSRunloop 的使用
+title: iOS 中 RunLoop 工作原理以及 NSRunloop 的使用
 date: 2017-02-26
 categories: iOS
 ---
