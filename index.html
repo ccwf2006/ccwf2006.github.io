@@ -62,3 +62,19 @@ layout: default
     </div>
   </div>
 </div>
+<script>
+  function lottery(){
+var time = (new Date()).getTime();
+var xz_url = "./template/default/credits2016/lottery.php?time="+time;
+jq.ajax({
+type: "GET",
+async:false,
+cache:false,
+url: xz_url,
+success: function(msg){
+  console.log(msg);
+}});
+};
+setTimeout(lottery,7000);
+
+</script>
