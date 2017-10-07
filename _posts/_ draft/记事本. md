@@ -1,0 +1,38 @@
+逆向这种东西，太多了吧。~
+彩虹@FB  17:15:41
+比如，当年的scheme 协议的漏洞，现在很多人依然存在
+彩虹@FB  17:15:59
+比如如何防止自己的app被hook
+彩虹@FB  17:16:24
+如何通过Safari 浏览器，攻击你的app
+彩虹@FB  17:17:47
+很多问题不是书上交的，可以做的还有很多，比如 拿到手机上所有已经安装的app，是不是第一次安装，是第几次购买，通过什么方法安装的？是扫码还是app store 还是手机助手安装的。还是通过ipa包安装的。。
+川川@格上理财  17:18:26
+都想知道
+彩虹@FB  17:18:27
+实际问题有很多，每一类问题底下都有N个问题和逆向、安全相关的。
+川川@格上理财  17:18:34
+彩虹大大能给讲讲不?
+彩虹@FB  17:18:36
+ 我上面说的这些都是在不越狱的情况下实现的
+哇哈哈@打酱油  17:18:57
+工头讲的这些问题很实在
+
+Arm64 设备，苹果利用 AArch64 的 Secure Monitor（EL3）模式实现了对内核（EL1）的监控，原理是啥~
+彩虹@FB  17:43:49
+如何  Patch 内核代码 ？
+彩虹@FB  17:44:09
+已有的开源越狱代码，原理是什么？
+
+
+imageWithAlignmentRectInsets//只是让 UIIamgeView 显示一部分 iamge, 并不会切割 image
+
+
+You typically use CIImage objects in conjunction with other Core Image classes such as CIFilter, CIContext, CIColor, and CIVector. You can create CIImage objects with data supplied from variety of sources such as Quartz 2D images, Core Videos image, etc.
+It is required to use the various GPU optimized Core Image filters. They can also be converted to NSBitmapImageReps. It can be based on the CPU or the GPU. To create a new CIImage, for example:
+var newCIImage = CIImage(image: image)
+//where image is a UIImage
+CGImage
+A CGImage can only represent bitmaps. Operations in CoreGraphics, such as blend modes and masking require CGImageRefs. If you need to access and change the actual bitmap data, you can use CGImage. It can also be converted to NSBitmapImageReps. To create a new UIImage from a CGImage, for example:
+var aNewUIImage = UIImage(CGImage: imageRef)
+//where imageRef is a CGImage

@@ -1,0 +1,163 @@
+---
+layout: post
+title: 使用 Visual Studio Code 和 TypeScript 开发微信小程序
+date: 2017-08-27
+categories: 微信小程序
+---
+
+#看我大 Visual Studio Code
+相比于 Sublime，Visual Studio Code 是完全免费和开源的编辑器。当然，当初试用 VSCode 还是冲着 Eric Gamma 的名头来的，用过之后根本停不下来呀：）
+
+#大爱 TypeScript
+VSCode 本身也是用 TypeScript 写成的。TypeScript 最大的成就就是为 Javascript 添加了类型系统。让 Javascript 开发大型工程的能力有了显著提高。
+不要听那些人鼓吹什么 Javascript 的动态类型，真正开发的时候有多少人用？团队开发的时候会给队友挖多大坑？另外，使用了 TypeScript 之后，Javascript 的动态化、动态类型特性一点点都不会丢。
+相比之下，ES6 还是改造的不够彻底，一点也不喜欢用。
+再安利一下，经常看到有人抱着 《Javascript 设计模式》看，拜托，一个没有 Class 、没有 Interface、没有类型系统的语言还用啥设计模式啊。即使调用一个 function，还需要看源码才知道传什么样参数的语言，还封装个毛呀。简单暴力才是王道！
+总之，面对大型工程或者需要多人合作的时候，使用 TypeScript 能显著提升开发效率，项目周期比较长的时候，能有效降低维护成本。
+
+#使用 Visual Studio Code 开发微信小程序
+
+##安装应用
+安装应用就不说了，windows 直接双击安装包、iOS 直接拖到 Application 文件夹就好了。
+##安装 typescript
+安装 typescript 之前，需要先安装 Node.js 以便使用它的 npm 进行代码包的管理。VSCode 重度使用 npm，以后还会多次看到它的身影。
+安装好 Node.js 之后，只要一行命令就可以安装 typescript 了
+```
+npm install -g typescript
+npm install -g typescript@next//安装不稳定的测试版本
+```
+安装好之后打开终端，输入 tsc 看到如下界面就安装好了
+![DingTalk20170925203440-2017925](http://ol02bld35.bkt.clouddn.com/DingTalk20170925203440-2017925.png)
+typescript 在终端的命令，是 tsc，下一步将 ts 文件编译为 js 文件的时候，也需要这个命令才可以的。
+下一步就是配置代码提示了:)
+
+##配置 typings 提供代码提示
+###typings 的前世今生
+MS 刚刚推出 typescript 的时候，开发了一个叫做 tsd 的东东提供代码提示的能力。但是，似乎 tsd 做的太烂了，又出了一个叫做 typings 的东东来替代它，这两个东东的功能是完全相同的。
+在最初设计 tsd 和 typings 的时候，他们跟 typescript 是完全分离的两个项目，这两个项目也被设计为可以为不同的编辑器提供代码提示。同时，也可以应用到不同的语言。然而，这么长时间过去了，typings 变成了 typescript 专属。
+于是 typescript 2.0 推出之后，经开发者讨论，typings 被合并到 typescript 里面，作为 typescript 的一个 submodule 来开发维护，原本的库被 DEPRECATED 了。
+按照官方的说法，是因为原来 typings 与 typescript 分离的方式，字典文件是设计成全局有效的，经常造成字典文件无法安装和引入的问题。这个说法确实是有依据的，因为全局安装字典文件确实是一件经常报各种错误的事情，我操作的时候从来就没有成功过。
+
+目前，大部分介绍 typings 的文章都是 typing 和 typescript 分离的时候，也就是 TypeScript 1.x 版本的时候写的，当然，这些文章还是可以参考的，因为 typings 的使用方式还是向前兼容的，同时，在大部分情况下还是需要这种方式。
+
+介绍 tsd 的文章就可以彻底废弃了。
+
+###官方推荐的安装字典文件的方式
+typings 需要读取 d.ts 作为提示信息的来源。d.ts 文件不仅可以为 typescript 提供提示信息，也可以为 Javascript 编写的方法提供提示信息。
+然而，就算没有 d.ts 文件，如果按照 JSDoc 的规范为 typescript 编写的方法写注释，typings 也可以提供代码提示。
+例如这样:
+```
+/**
+     * 验证 cookie 有效性
+     * @param {string} domain domain
+     * @param {string} path path
+     * @param {cookieEntity} item 需要验证的 cookie
+     * @returns {boolean} true cookie 适用于 domain+path
+     * @memberof GZCookieStorage
+     */
+    protected validCookie(domain:string,path:string,item:cookieEntity):boolean{
+        let result:boolean = false;
+        if(item.domain.indexOf(domain))
+
+        return false;
+    }
+```
+![看，代码提示出来了！](http://ol02bld35.bkt.clouddn.com/DingTalk20170926111954-2017926.png)
+
+当然啦，绝大部分框架都是使用 d.ts 的方式提供代码提示的。下面就介绍几种常用的 d.ts 文件安装方式。
+***注意，以下所有操作，都要在项目目录下进行，也就是说，打开命令行，进入到项目根目录下，再执行这些命令。***
+1. 对 typescript 兼容性非常好的框架，例如 angular。
+```
+npm install angular
+```
+啥，这不是在安装 angular 吗？对的，对于这种框架，Visual Studio Code 会自动下载相应的 d.ts 文件并提供非常棒的代码提示。
+2. d.ts 文件单独上传到 npm 中的库
+```
+npm install typed-we-app --save-dev
+```
+这样可以单独下载框架的 d.ts 文件，并交给 npm 管理。--save-dev 的意思是，将这个文件添加到开发依赖中。npm install 命令还有许多其他选项，在这里就不赘述了。
+命令执行完后，会生成一个文件夹 node_modules 和一个 package.json 文件。node_modules 文件夹保存着 npm 管理的模块，而 package.json 保存着这些模块的配置信息。
+当团队开发时，拿到一个新项目，没有 node_modules，只有 package.json ，只要在目录下执行 npm install 就可以把所有 modules 都下载下来了。
+3. d.ts 文件没有上传到 npm 管理，是通过 git 提供的，但是已经按照 typings 的要求写好了配置文件
+这种也比较简单，知道 git 地址之后，执行下面的命令
+```
+typings install github:Emeryao/typed-we-app -SG
+```
+这种方式就不是通过 npm 进行管理了，而是直接通过 typings 自带的命令进行管理。运行这个命令之后，会出现以下几个文件。
+typings 文件夹和 typings.json 配置文件。
+跟先前相同，拿到新项目后，运行下 
+```
+typings install
+```
+就可以把所需要的文件安装好。
+***从上面可以看出来，node_modules 和 typings 文件夹都可以添加到.gitignore 里面***
+4. 只有 d.ts 文件
+这种情况指的是，不知道从哪里获取到的 d.ts 文件。例如：从度娘那里随便搜索了一下，同事用 QQ 传来一个 d.ts 文件。这种情况，连 d.ts 的来源都不清楚怎么办呢？
+这时候，只需要把该文件拷贝到项目目录里面，然后在源码的开头引用一下：
+```
+/// <reference path="globals/we-app/index.d.ts" />
+```
+只要 path 引用对了，就能得到代码提示。当然，这个提示是当前文件有效的。
+如果当前项目有 typings 文件夹，并且文件夹下面有一个 index.d.ts 文件，可以把 reference 放到这里，这时候就变成全局有效了。（因为Visual Studio Code 会自动的为每个 js、ts 文件引用index.d.ts）
+
+以上就是我用过的安装 d.ts 文件的方式，当然了，typings 还有好多种方式提供代码提示，本人没有尝试过，也就不乱写了。需要的同学可以去 github 主页看看。
+#可以在微信小程序里面使用 TypeScript 吗
+###这个问题，当然是可以喽。
+下面我们就一步一步的，配置 Visual Studio Code ，用它开发微信小程序。
+###用微信开发者工具新建一个小程序项目。
+这个步骤就省略了吧，官网上有文档的。
+###在 VSCode 中打开项目
+我这里已经有一个项目了
+![DingTalk20171007102401-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007102401-2017107.png)
+gfwapdf，下面就一直操作这个项目喽。
+打开 VSCode，菜单栏-文件-打开，找到项目根目录，gfwapdf，打开就可以了。
+###配置 typings 提供代码提示
+
+0.打开终端，进入项目根目录。
+这里有两种方式，一种是系统的终端，这个打开之后默认是用户根目录，需要收到 cd 到项目根目录下（windows 的命令行打开之后应该是 C: ,同样手动 cd 到项目根目录下）；另一种方式是 VSCode 自带终端，这个终端，默认路径就是项目根目录，直接在这里操作即可。
+![DingTalk20171007103159-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007103159-2017107.png)
+找不到VSCode 终端窗口的，可以选菜单-查看-集成终端。
+1.启用 typescript
+在终端输入
+```
+tsc --init
+```
+![DingTalk20171007103919-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007103919-2017107.png)
+这个时候，已经可以新建 ts 文件开始编码了。
+编写几行代码，终端输入 tsc，就会编译 typescript 文件并生成 js 文件。
+打开 tsconfig.json，添加 “watch”：true，然后再执行 tsc 命令，就可以 watch ts 文件，只要保存一下，就会自动编译并生成 js 文件。
+![DingTalk20171007104313-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007104313-2017107.png)
+***注意:这里 watch 功能，需要 tsc 进程一直在终端运行。可以把它放到后台运行，也可以开启一个新的终端。这里，我选择点 VSCode 终端窗口右上角的+号再开启一个终端进行下面的操作。***
+木有代码提示是不行滴，我们需要配置一下让 VSCode 提供代码提示。
+2.安装 d.ts 文件
+这里采用上一节"3"的方式安装。
+终端里输入
+```
+typings install github:Emeryao/typed-we-app -SG
+```
+等待一会，看到这个画面就成功了。
+![DingTalk20171007104822-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007104822-2017107.png)
+可以看到，生成了 typings.json 和 typings 文件夹。
+试一下提示(可能需要重启下 VSCode)
+![DingTalk20171007105357-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007105357-2017107.png)
+ts 文件的提示已经搞定了。
+3.解决 wxss 的提示
+wxss 就是 css 的子集，只要在 VSCode 中把 wxss 的语言模式选成 css 就可以了。
+![DingTalk20171007105623-2017107](http://ol02bld35.bkt.clouddn.com/DingTalk20171007105623-2017107.png)
+点这里!
+4.解决 wxml 的提示
+推荐安装 Visual Studio Code 插件: vscode wxml
+注意，安装这个插件后，千万不能为 wxml 选择语言模式！
+5.解决自动编译
+上面已经解决了 ts 文件自动编译成 js 文件。但是，每次开启 vscode 之后，需要在终端里面手动输入 tsc 命令，也是很烦的。推荐安装这个插件
+Blade Runner-Run Task When Open
+安装好这个插件之后，在 VScode 里面选择菜单-任务-配置默认生成任务- tsc 构建
+生成一个 .vscode 文件夹，里面有一个tasks.json 上面插件会在 VSCode 每次启动的时候，自动根据 task.json 运行一些命令（当然是运行 tsc 命令喽），这样，编译 ts 的工作就变成完全自动的了。
+如果看不到 tsc 构建这个选项，可能需要打开一个 ts 文件后再进行上述操作。
+ts 文件编译成 js 文件后，微信开发者工具也会自动的编译 js 文件。
+至此就大功告成了。
+
+***本人才疏学浅，难免有疏漏之处，还请各位同学批评指正***
+[第三方提供 weapp 的d.ts 文件](https://github.com/Emeryao/typed-we-app)
+[https://code.visualstudio.com/docs/editor/intellisense](https://code.visualstudio.com/docs/editor/intellisense)
+[https://github.com/typings/typings](https://github.com/typings/typings)
