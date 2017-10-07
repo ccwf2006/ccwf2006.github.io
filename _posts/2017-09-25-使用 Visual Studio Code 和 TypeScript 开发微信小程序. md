@@ -6,7 +6,7 @@ categories: 微信小程序
 ---
 
 #看我大 Visual Studio Code
-相比于 Sublime，Visual Studio Code 是完全免费和开源的编辑器。当然，当初试用 VSCode 还是冲着 Eric Gamma 的名头来的，用过之后根本停不下来呀：）
+相比于 Sublime，Visual Studio Code 是完全免费和开源的编辑器。当然，当初试用 VSCode 还是冲着 Erich Gamma 的名头来的，用过之后根本停不下来呀：）
 
 #大爱 TypeScript
 VSCode 本身也是用 TypeScript 写成的。TypeScript 最大的成就就是为 Javascript 添加了类型系统。让 Javascript 开发大型工程的能力有了显著提高。
